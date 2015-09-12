@@ -24,32 +24,19 @@ func main() {
 			horizon = append(horizon, currentPath)
 		}
 	}
-	words := []string{}
+	validPaths := []Path{}
 
 	for len(horizon) != 0 {
-		fmt.Println("Size of horizon", len(horizon))
 
 		currentPath := horizon[0]
 		horizon = horizon[1:]
 
 		possiblePaths := currentPath.Explore(board)
-		fmt.Println(currentPath.Word(), len(possiblePaths))
 
 		for _, possiblePath := range possiblePaths {
-			fmt.Println("\t", possiblePath.Word(), []byte(possiblePath.Word()))
 
 			if IsWord(possiblePath.Word()) {
-				fmt.Println(words)
-
-				if len(possiblePath) >= 5 {
-					fmt.Println()
-					fmt.Println(possiblePath.Word())
-					fmt.Println()
-
-					board.PrintPath(possiblePath)
-					time.Sleep(time.Second * 3)
-				}
-				words = AppendIfUnique(words, possiblePath.Word())
+				validPaths = AppendIfUnique(validPaths, possiblePath)
 			}
 
 			if !HasChildren(possiblePath.Word()) {
@@ -60,27 +47,24 @@ func main() {
 		}
 	}
 
-	sort.Sort(ByLength(words))
-	fmt.Println(words)
+	sort.Sort(Paths(validPaths))
+
+	for _, validPath := range validPaths {
+		fmt.Println()
+		fmt.Println(validPath.Word())
+		fmt.Println()
+		board.PrintPath(validPath)
+		time.Sleep(time.Second * 3)
+
+	}
 }
 
-func AppendIfUnique(words []string, word string) []string {
-	for _, w := range words {
-		if w == word {
-			return words
+func AppendIfUnique(paths []Path, path Path) []Path {
+	for _, p := range paths {
+
+		if p.Word() == path.Word() {
+			return paths
 		}
 	}
-	return append(words, word)
-}
-
-type ByLength []string
-
-func (s ByLength) Len() int {
-	return len(s)
-}
-func (s ByLength) Swap(i, j int) {
-	s[i], s[j] = s[j], s[i]
-}
-func (s ByLength) Less(i, j int) bool {
-	return len(s[i]) < len(s[j])
+	return append(paths, path)
 }

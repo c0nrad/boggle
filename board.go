@@ -109,7 +109,6 @@ func (p Path) Explore(b Board) []Path {
 	last := p[len(p)-1]
 
 	possibleSpots := b.GetAdjacent(last.X, last.Y)
-	fmt.Println("possibleSpots", possibleSpots)
 
 	for _, possibleSpot := range possibleSpots {
 		if !p.SeenSpot(possibleSpot) {
@@ -118,6 +117,17 @@ func (p Path) Explore(b Board) []Path {
 			out = append(out, newPath)
 		}
 	}
-	fmt.Println("possibleSpots out", out)
 	return out
+}
+
+type Paths []Path
+
+func (paths Paths) Len() int {
+	return len(paths)
+}
+func (paths Paths) Swap(i, j int) {
+	paths[i], paths[j] = paths[j], paths[i]
+}
+func (paths Paths) Less(i, j int) bool {
+	return len(paths[i]) > len(paths[j])
 }
