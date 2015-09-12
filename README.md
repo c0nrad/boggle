@@ -1,6 +1,6 @@
 # boggle solver
 
-A simple boggle solver
+A simple boggle solver so I can finally beat Katie
 
 ![boggle.gif](boggle.gif)
 
