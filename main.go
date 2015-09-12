@@ -54,7 +54,7 @@ func main() {
 		fmt.Println(validPath.Word())
 		fmt.Println()
 		board.PrintPath(validPath)
-		time.Sleep(time.Second * 3)
+		time.Sleep(time.Second * 2)
 
 	}
 }
